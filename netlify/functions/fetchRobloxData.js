@@ -17,9 +17,6 @@ exports.handler = async(event, context) => {
             }
         })
 
-        console.log(key)
-        console.log(api)
-
         const result = await response.json()
         return {
             statusCode: 200,
