@@ -1,3 +1,4 @@
+
 let Amount = localStorage.getItem("Amount") || 0
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -119,7 +120,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Get form values
             const name = document.getElementById('name').value;
-            const discordname = document.getElementById('discord').value;
+            const email = document.getElementById('email').value;
             const subject = document.getElementById('subject').value;
             const message = document.getElementById('message').value;
             
@@ -130,27 +131,19 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             // Email validation
-            /*if (!isValidEmail(email)) {
+            if (!isValidEmail(email)) {
                 showFormAlert('Please enter a valid email address', 'error');
                 return;
-            }*/
+            }
 
             const formData = {
-                "content": null,
-                "embeds": [
-                  {
-                    "title": "Job Application",
-                    "description": `**Subject:**\n${subject}\n\n**Client Name:**\n${name}\n\n**Discord Username:**\n${discordname}\n\n**Message:**\n${message}`,
-                    "color": 3342591,
-                    "fields": [
-                      {
-                        "name": "Job Id",
-                        "value": `${Amount}}`
-                      }
-                    ]
-                  }
-                ],
-                "attachments": []
+                "title": "Contact Information",
+                "color": 3342591,
+                "value": `${Amount}`,
+                "message": `${message}`,
+                "subject": `${subject}`,
+                "email": `${email}`,
+                "name": `${name}` 
               }
             
               try {
@@ -175,6 +168,11 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
+    function isValidEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    }
+
     // Helper function to show form alerts
     function showFormAlert(message, type) {
         // Check if alert element already exists
