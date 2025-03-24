@@ -1,4 +1,4 @@
-require("dotenv").config();
+//require("dotenv").config();
 
 const key = process.env.RobloxKey;
 const api = process.env.apiKey;
