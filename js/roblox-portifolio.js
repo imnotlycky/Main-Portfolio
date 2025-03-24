@@ -107,12 +107,11 @@ document.addEventListener('DOMContentLoaded', function() {
     
         if (placeId) {
             try {
-                let response = await fetch(`https://imnotlycky-portifolio.netlify.app/.netlify/functions/fetchRobloxData?placeId=${placeId}`);
-                let data = await response.json(); // Assuming the API returns JSON
-    
-                if (data.imageUrl) { // Check if the response has the image URL
-                    e.src = data.imageUrl;
-                }
+                let response = await fetch(`https://imnotlycky-portifolio.netlify.app/.netlify/functions/fetchRobloxData?placeId=${placeId}`, {
+                    'Access-Control-Allow-Origin': "no-cors"
+                });
+                
+                console.log(response)
             } catch (error) {
                 console.error("Error fetching image data:", error);
             }
