@@ -1,7 +1,9 @@
-exports.handler = async(event, context) => {
-    const key = process.env.RobloxKey;
-    const api = process.env.apiKey;
+require("dotenv").config();
 
+const key = process.env.RobloxKey;
+const api = process.env.apiKey;
+
+exports.handler = async(event, context) => {
     const { placeId } = event.queryStringParameters;
 
     let link = `https://develop.roblox.com/v2/places/${placeId}`;

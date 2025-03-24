@@ -19,102 +19,114 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    backToTopButton.addEventListener('click', function(e) {
-        e.preventDefault();
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    });
-    
-    // Portfolio filtering - improved
+    // Portfolio filtering
     const filterButtons = document.querySelectorAll('.filter-btn');
-    const portfolioItems = document.querySelectorAll('.project-card, .game-card');
-    const sectionTitles = document.querySelectorAll('.portfolio-category-title');
     const portfolioSections = document.querySelectorAll('.portfolio-section');
     
     filterButtons.forEach(button => {
         button.addEventListener('click', function() {
-            // Remove active class from all buttons
             filterButtons.forEach(btn => btn.classList.remove('active'));
-            
-            // Add active class to clicked button
             this.classList.add('active');
-            
-            // Get filter value
             const filterValue = this.getAttribute('data-filter');
             
-            // Handle section visibility
-            if (filterValue === 'all') {
-                // Show all sections
-                portfolioSections.forEach(section => {
-                    section.classList.remove('hidden');
-                });
-            } else {
-                // Show only related sections
-                portfolioSections.forEach(section => {
-                    if (section.id.includes(filterValue)) {
-                        section.classList.remove('hidden');
-                    } else {
-                        section.classList.add('hidden');
-                    }
-                });
-            }
-            
-            // Handle items visibility
-            portfolioItems.forEach(item => {
-                // Remove animation class
-                item.classList.remove('fadeIn');
-                
-                // Show or hide items based on filter
-                if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
-                    item.classList.remove('hidden');
-                    // Trigger reflow for animation
-                    void item.offsetWidth;
-                    item.classList.add('fadeIn');
-                } else {
-                    item.classList.add('hidden');
-                }
+            portfolioSections.forEach(section => {
+                section.classList.toggle('hidden', 
+                    filterValue !== 'all' && !section.id.includes(filterValue)
+                );
             });
         });
     });
-    
-    // Initialize contact form (placeholder for future implementation)
-    const contactForm = document.getElementById('contact-form');
-    if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            // Form submission logic would go here
-            alert('Form submission is currently disabled. Please contact via Discord.');
+
+    // Game data with place IDs
+    const gameData = [
+        {
+            title: "Tiny 2d Bread Factory 2",
+            description: "First Fully 2d Game made on Roblox with 20k visits!",
+            placeId: "14582193124",
+            link: "https://www.roblox.com/games/14582193124",
+            category: "games"
+        }
+        // Add more games here
+    ];
+
+    // Initialize game cards
+    function initializeGameCards() {
+        const gamesGrid = document.querySelector('.games-grid');
+        
+        gameData.forEach(game => {
+            const gameCard = document.createElement('div');
+            gameCard.className = 'game-card';
+            gameCard.setAttribute('data-category', game.category);
+            
+            gameCard.innerHTML = `
+                <div class="game-logo loading">
+                    <img class="GameLogo" 
+                         id="${game.placeId}" 
+                         src="../images/transparent.png" 
+                         alt="${game.title}" 
+                         loading="lazy">
+                </div>
+                <div class="game-content">
+                    <h3>${game.title}</h3>
+                    <p>${game.description}</p>
+                    <a href="${game.link}" target="_blank" class="btn btn-primary">
+                        <i class="fas fa-play"></i> Play Now
+                    </a>
+                </div>
+            `;
+            
+            gamesGrid.appendChild(gameCard);
         });
     }
-    
-    // Add active class to nav links based on current page
-    const currentPage = window.location.pathname.split('/').pop();
-    const navLinks = document.querySelectorAll('.nav-link');
-    
-    navLinks.forEach(link => {
-        const linkPage = link.getAttribute('href').split('/').pop();
-        if (linkPage === currentPage) {
-            link.classList.add('active-link');
-        }
-    });
 
-    document.querySelectorAll('.GameLogo').forEach(async (e) => {
-        let placeId = e.id;
-    
-        console.log(placeId);
-    
-        if (placeId) {
+    // Fetch game images from Netlify function
+    async function loadGameImages() {
+        const gameLogos = document.querySelectorAll('.GameLogo');
+        
+        for (const logo of gameLogos) {
+            const placeId = logo.id;
+            const container = logo.parentElement;
+            
             try {
-                let response = await fetch(`https://imnotlycky-portifolio.netlify.app/.netlify/functions/fetchRobloxData?placeId=${placeId}`, {
-                    'Access-Control-Allow-Origin': "no-cors"
-                });
-                
-                console.log(response)
+                const response = await fetch(
+                    `../.netlify/functions/fetchRobloxData?placeId=${placeId}`
+                );
+                const data = await response.json();
+
+                if (response.ok) {
+                    logo.style.opacity = '0';
+                    logo.src = data.result;
+                    logo.onload = () => {
+                        logo.style.opacity = '1';
+                        container.classList.remove('loading');
+                    };
+                }
             } catch (error) {
-                console.error("Error fetching image data:", error);
+                console.error("Error loading game image:", error);
+                logo.src = '../images/transparent.png';
+                container.classList.remove('loading');
             }
         }
-    });    
+    }
+
+    // Lazy load YouTube videos
+    function lazyLoadVideos() {
+        const videoIframes = document.querySelectorAll('iframe[data-src]');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const iframe = entry.target;
+                    iframe.src = iframe.dataset.src;
+                    observer.unobserve(iframe);
+                }
+            });
+        }, { rootMargin: '200px' });
+
+        videoIframes.forEach(iframe => observer.observe(iframe));
+    }
+
+    // Initialize all components
+    initializeGameCards();
+    loadGameImages();
+    lazyLoadVideos();
 });
