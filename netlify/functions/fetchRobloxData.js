@@ -42,13 +42,13 @@ exports.handler = async(event, context) => {
         else {
             return {
                 statusCode: 403,
-                body: JSON.stringify({ error: `${response.statusText}`})
+                body: JSON.stringify({ error: `403 ${response.statusText}`})
             }
         }
     } catch(e) {
         return {
             statusCode: 404,
-            body: JSON.stringify({ error: `${e}`})
+            body: JSON.stringify({ error: `404 ${e}`})
         }
     }
 }
