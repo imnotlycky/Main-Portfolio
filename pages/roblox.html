@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Imnotlycky's Roblox Portfolio</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/roblox-portfolio.css">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="navbar-container container">
+            <div class="logo">Imnotlycky</div>
+            <div class="menu-toggle" id="mobile-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="../index.html" class="nav-link">Home</a></li>
+                <li><a href="../index.html#about" class="nav-link">About</a></li>
+                <li><a href="../index.html#portfolio-categories" class="nav-link">Portfolio</a></li>
+                <li><a href="../index.html#contact" class="nav-link">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="section portfolio-header">
+        <div class="container">
+            <a href="../index.html#portfolio-categories" class="back-btn">
+                <i class="fas fa-arrow-left"></i> Back to Categories
+            </a>
+            <div class="section-header">
+                <h2>Roblox Portfolio</h2>
+                <div class="underline"></div>
+                <p class="section-subtitle">My projects and games developed on the Roblox platform</p>
+            </div>
+            
+            <!-- Category Filter Buttons -->
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="games">Games</button>
+                <button class="filter-btn" data-filter="projects">Projects</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Roblox Games Section -->
+    <section class="section portfolio-section" id="roblox-games">
+        <div class="container">
+            <h3 class="portfolio-category-title">Roblox Games</h3>
+            
+            <div class="games-grid">
+                <!-- Game Card 1 -->
+                <div class="game-card" data-category="games">
+                    <div class="game-logo">
+                        <img src="https://via.placeholder.com/150" alt="Game Logo">
+                    </div>
+                    <div class="game-content">
+                        <h3>Sample Game Title</h3>
+                        <p>This is a sample description for your Roblox game. Explain what the game is about, its features, and what makes it unique. Feel free to mention any achievements or player milestones.</p>
+                        <a href="https://www.roblox.com/games/yourgameid" target="_blank" class="btn btn-primary">
+                            <i class="fas fa-play"></i> Play Now
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Game Card 2 -->
+                <div class="game-card" data-category="games">
+                    <div class="game-logo">
+                        <img src="https://via.placeholder.com/150" alt="Game Logo">
+                    </div>
+                    <div class="game-content">
+                        <h3>Another Game Title</h3>
+                        <p>This is another sample game description. Describe the gameplay, target audience, and any special mechanics or features that make this game stand out on the Roblox platform.</p>
+                        <a href="https://www.roblox.com/games/yourgameid" target="_blank" class="btn btn-primary">
+                            <i class="fas fa-play"></i> Play Now
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Add more game cards as needed -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Roblox Projects Section -->
+    <section class="section portfolio-section" id="roblox-projects">
+        <div class="container">
+            <h3 class="portfolio-category-title">Roblox Projects</h3>
+            
+            <div class="project-grid">
+                <!-- Project Card 1 -->
+                <div class="project-card" data-category="projects">
+                    <div class="project-video">
+                        <iframe src="https://www.youtube.com/embed/your-video-id" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                    <div class="project-content">
+                        <h3>Project Title</h3>
+                        <div class="project-tags">
+                            <span class="tag">UI Design</span>
+                            <span class="tag">Scripting</span>
+                        </div>
+                        <p>This is a sample description for your Roblox project. Describe what problem it solves, the technologies used, and your role in developing it. Mention any unique challenges or interesting solutions.</p>
+                    </div>
+                </div>
+                
+                <!-- Project Card 2 -->
+                <div class="project-card" data-category="projects">
+                    <div class="project-video">
+                        <iframe src="https://www.youtube.com/embed/your-video-id" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                    <div class="project-content">
+                        <h3>Another Project</h3>
+                        <div class="project-tags">
+                            <span class="tag">Game Mechanics</span>
+                            <span class="tag">Lua</span>
+                        </div>
+                        <p>This is another sample project description. Talk about the scope, implementation details, and how it fits into a larger Roblox game or system. Include technical details that showcase your skills.</p>
+                    </div>
+                </div>
+                
+                <!-- Add more project cards as needed -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2024 imnotlycky. All Rights Reserved.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <a href="#" class="back-to-top" id="back-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+
+    <!-- JavaScript -->
+    <script src="../js/roblox-portifolio.js"></script>
+</body>
+</html>
