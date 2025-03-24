@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
         if (placeId) {
             try {
-                let response = await fetch(`https://imnotlycky-portifolio.netlify.app/.netlify/functions/fetchRobloxData?placeId=${placeId}&secretKey=neor[v'0x4*wtP/vB6PF{Ada`);
+                let response = await fetch(`https://imnotlycky-portifolio.netlify.app/.netlify/functions/fetchRobloxData?placeId=${placeId}`);
                 let data = await response.json(); // Assuming the API returns JSON
     
                 if (data.imageUrl) { // Check if the response has the image URL
