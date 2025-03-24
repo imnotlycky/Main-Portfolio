@@ -1,11 +1,3 @@
-async function getdata(link) {
-    const response = await fetch(link)
-
-    const result = await response.json()
-
-    return result;
-}
-
 document.addEventListener('DOMContentLoaded', function() {
     // Mobile menu toggle
     const mobileMenu = document.getElementById('mobile-menu');
@@ -108,13 +100,22 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    document.getElementsByClassName('GameLogo', (e) => {
+    document.querySelectorAll('.GameLogo').forEach(async (e) => {
         let placeId = e.id;
-
-        if (placeId != "" && placeId != null && placeId != undefined) {
-            let data = getdata(`https://imnotlycky-portifolio.netlify.app/.netlify/functions/fetchRobloxData?placeId=${placeId}&secretKey=neor[v'0x4*wtP/vB6PF{Ada`)
-
-            console.log(data)
+    
+        console.log(placeId);
+    
+        if (placeId) {
+            try {
+                let response = await fetch(`https://imnotlycky-portifolio.netlify.app/.netlify/functions/fetchRobloxData?placeId=${placeId}&secretKey=neor[v'0x4*wtP/vB6PF{Ada`);
+                let data = await response.json(); // Assuming the API returns JSON
+    
+                if (data.imageUrl) { // Check if the response has the image URL
+                    e.src = data.imageUrl;
+                }
+            } catch (error) {
+                console.error("Error fetching image data:", error);
+            }
         }
-    })
+    });    
 });
