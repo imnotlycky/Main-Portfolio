@@ -125,6 +125,14 @@ document.addEventListener('DOMContentLoaded', function() {
         videoIframes.forEach(iframe => observer.observe(iframe));
     }
 
+    const id1 = document.getElementById('discord-id');
+
+    if (id1) {
+        id1.addEventListener('click', function () {
+            window.open("https://discord.com/users/785504762938392657", "_blank")
+        });
+    }
+
     // Initialize all components
     initializeGameCards();
     loadGameImages();

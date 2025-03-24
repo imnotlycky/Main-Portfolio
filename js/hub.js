@@ -1,3 +1,5 @@
+let Amount = localStorage.getItem("Amount") || 0
+
 document.addEventListener('DOMContentLoaded', function() {
     // Mobile menu toggle
     const mobileMenu = document.getElementById('mobile-menu');
@@ -112,12 +114,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const contactForm = document.getElementById('contact-form');
     
     if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
+        contactForm.addEventListener('submit', async function(e) {
             e.preventDefault();
             
             // Get form values
             const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
+            const discordname = document.getElementById('discord').value;
             const subject = document.getElementById('subject').value;
             const message = document.getElementById('message').value;
             
@@ -128,26 +130,49 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             // Email validation
-            if (!isValidEmail(email)) {
+            /*if (!isValidEmail(email)) {
                 showFormAlert('Please enter a valid email address', 'error');
                 return;
-            }
+            }*/
+
+            const formData = {
+                "content": null,
+                "embeds": [
+                  {
+                    "title": "Job Application",
+                    "description": `**Subject:**\n${subject}\n\n**Client Name:**\n${name}\n\n**Discord Username:**\n${discrodname}\n\n**Message:**\n${message}`,
+                    "color": 3342591,
+                    "fields": [
+                      {
+                        "name": "Job Id",
+                        "value": `${Amount}}`
+                      }
+                    ]
+                  }
+                ],
+                "attachments": []
+              }
             
-            // Here you would normally send the form data to a server
-            // For demonstration purposes, we'll just show a success message
-            
-            // Show success message
-            showFormAlert('Message sent successfully! I will get back to you soon.', 'success');
-            
-            // Clear form
-            contactForm.reset();
-        });
-    }
+              try {
+                // Send data to Netlify function
+                const response = await fetch('../.netlify/functions/discordWebhook', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
     
-    // Helper function to validate email
-    function isValidEmail(email) {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(email);
+                const result = await response.json();
+    
+                if (response.ok) {
+                    showFormAlert('Message sent successfully! I will get back to you soon.', 'success');
+                    contactForm.reset();
+                } else {
+                    throw new Error(result.error || 'Something went wrong.');
+                }
+            } catch (error) {
+                showFormAlert(`Error: ${error.message}`, 'error');
+            }
+        });
     }
     
     // Helper function to show form alerts
@@ -176,6 +201,8 @@ document.addEventListener('DOMContentLoaded', function() {
             alertElement.style.backgroundColor = 'rgba(46, 204, 113, 0.2)';
             alertElement.style.color = '#2ecc71';
             alertElement.style.border = '1px solid #2ecc71';
+
+            localStorage.setItem("Amount", localStorage.getItem("Amount")+1)
         } else {
             alertElement.style.backgroundColor = 'rgba(231, 76, 60, 0.2)';
             alertElement.style.color = '#e74c3c';
