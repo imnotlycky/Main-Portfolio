@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
         if (placeId) {
             try {
-                let response = await fetch(`/.netlify/functions/fetchRobloxData?placeId=${placeId}`, {
+                let response = await fetch(`https://imnotlycky-portifolio.netlify.app/.netlify/functions/fetchRobloxData?placeId=${placeId}`, {
                     'Access-Control-Allow-Origin': "no-cors"
                 });
                 

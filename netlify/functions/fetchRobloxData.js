@@ -39,6 +39,12 @@ exports.handler = async(event, context) => {
                 body: JSON.stringify({ result: `${result2.data[0].imageUrl}`})
             }
         }
+        else {
+            return {
+                statusCode: 403,
+                body: JSON.stringify({ error: `${response.statusText}`})
+            }
+        }
     } catch(e) {
         return {
             statusCode: 404,
