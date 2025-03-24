@@ -9,6 +9,7 @@ exports.handler = async(event, context) => {
     }
 
     try {
+        console.log(event)
         const { message } = JSON.parse(event.body)
 
         if (!message) {

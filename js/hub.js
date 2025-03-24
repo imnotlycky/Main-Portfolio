@@ -140,7 +140,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 "embeds": [
                   {
                     "title": "Job Application",
-                    "description": `**Subject:**\n${subject}\n\n**Client Name:**\n${name}\n\n**Discord Username:**\n${discrodname}\n\n**Message:**\n${message}`,
+                    "description": `**Subject:**\n${subject}\n\n**Client Name:**\n${name}\n\n**Discord Username:**\n${discordname}\n\n**Message:**\n${message}`,
                     "color": 3342591,
                     "fields": [
                       {
