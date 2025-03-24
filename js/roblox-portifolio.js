@@ -45,8 +45,14 @@ document.addEventListener('DOMContentLoaded', function() {
             placeId: "14582193124",
             link: "https://www.roblox.com/games/14582193124",
             category: "games"
+        },
+        {
+            title: "Level Incremental",
+            description: "My First solo Code project (every place before this has been privated) 40k visits",
+            placeId: "16908148221",
+            link: "https://www.roblox.com/games/16908148221",
+            category: "games"
         }
-        // Add more games here
     ];
 
     // Initialize game cards
