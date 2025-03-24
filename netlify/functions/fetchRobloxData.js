@@ -7,9 +7,6 @@ exports.handler = async(event, context) => {
 
     let link = `https://develop.roblox.com/v2/places/${placeId}`;
 
-    console.log(secretKey)
-    console.log(secret)
-
     if (secretKey != secret) {
         return {
             statusCode: 401,
@@ -31,7 +28,7 @@ exports.handler = async(event, context) => {
         const result = await response.json()
         
         if (response.ok) {
-            let link2 = `https://thumbnails.roblox.com/v1/games/${result.universeId}/thumbnails?thumbnailIds=0&size=768x432&format=Png&isCircular=false`
+            let link2 = `https://thumbnails.roblox.com/v1/games/icons?universeIds=${result.universeId}&returnPolicy=PlaceHolder&size=512x512&format=Png&isCircular=false`
 
             const response2 = await fetch(link2, {
                 method: 'GET',
@@ -43,10 +40,11 @@ exports.handler = async(event, context) => {
                 }
             })
 
-            const result2 = await response.json()
+            const result2 = await response2.json()
+
             return {
                 statusCode: 200,
-                body: JSON.stringify(result2)
+                body: JSON.stringify({ result: `${result2.data[0].imageUrl}`})
             }
         }
     } catch(e) {

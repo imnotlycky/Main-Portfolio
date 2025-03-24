@@ -1,3 +1,11 @@
+async function getdata(link) {
+    const response = await fetch(link)
+
+    const result = await response.json()
+
+    return result;
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     // Mobile menu toggle
     const mobileMenu = document.getElementById('mobile-menu');
@@ -99,4 +107,14 @@ document.addEventListener('DOMContentLoaded', function() {
             link.classList.add('active-link');
         }
     });
+
+    document.getElementsByClassName('GameLogo', (e) => {
+        let placeId = e.id;
+
+        if (placeId != "" && placeId != null && placeId != undefined) {
+            let data = getdata(`https://imnotlycky-portifolio.netlify.app/.netlify/functions/fetchRobloxData?placeId=${placeId}&secretKey=neor[v'0x4*wtP/vB6PF{Ada`)
+
+            console.log(data)
+        }
+    })
 });
