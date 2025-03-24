@@ -188,21 +188,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 5000);
     }
     
-    // Handle theme change for future implementation
-    function setTheme(themeName) {
-        document.documentElement.setAttribute('data-theme', themeName);
-        localStorage.setItem('theme', themeName);
-    }
-    
-    // Initialize theme from localStorage or default to blue
-    function initTheme() {
-        const savedTheme = localStorage.getItem('theme') || 'blue';
-        setTheme(savedTheme);
-    }
-    
-    // Call theme initialization
-    initTheme();
-    
     // Add event listeners for any theme switcher buttons
     document.querySelectorAll('.theme-option').forEach(option => {
         option.addEventListener('click', function() {

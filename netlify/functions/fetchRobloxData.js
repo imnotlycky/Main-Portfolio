@@ -1,34 +1,34 @@
 exports.handler = async(event, context) => {
-    try {
-        const { placeId } = event.queryStringParameters;
+    const key = process.env.RobloxKey;
+    const api = process.env.apiKey;
 
-        if (!placeId) {
-            return {statusCode: 400, body: JSON.stringify({error: "Missing placeId"})}
-        }
+    const { placeId } = event.queryStringParameters;
 
-        const placeDetailsUrl = `https://games.roblox.com/v1/games/multiget-place-details?placeIds=${placeId}`;
-        const placeResponse = await fetch(placeDetailsUrl)
-        const placeData = await placeResponse.json();
+    let link = `https://develop.roblox.com/v2/places/${placeId}`;
 
-        if (!placeData || !placeData.data || placeData.data.length === 0) {
-            return { statusCode: 404, body: JSON.stringify({ error: "Place not found" }) };
-        }
+    try { 
+        const response = await fetch(link, {
+            method: 'GET',
+            headers: {
+                'X-API-KEY': `${api}`,
+                'X-CSRF-TOKEN': `${api}`,
+                'Content-Type': "application/json",
+                'Cookie': `.ROBLOSECURITY=${key}`
+            }
+        })
 
-        const universeId = placeData.data[0].universeId;
+        console.log(key)
+        console.log(api)
 
-        const thumbnailUrl = `https://thumbnails.roblox.com/v1/games/multiget/thumbnails?universeIds=${universeId}&size=768x432&format=Png&isCircular=false`;
-        const thumbnailResponse = await fetch(thumbnailUrl);
-        const thumbnailData = await thumbnailResponse.json();
-
+        const result = await response.json()
         return {
             statusCode: 200,
-            body: JSON.stringify({
-                placeData: placeData.data[0],
-                thumbnailData: thumbnailData.data[0] || null,
-            }),
-            headers: { "Content-Type": "application/json" }
-        };
-    } catch (e) {
-        return { statusCode: 500, body: JSON.stringify({ error: e.message }) };
+            body: JSON.stringify(result)
+        }
+    } catch(e) {
+        return {
+            statusCode: 404,
+            body: JSON.stringify({ error: `${e}`})
+        }
     }
 }
