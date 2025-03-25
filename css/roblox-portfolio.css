@@ -21,7 +21,7 @@
     background-color: var(--primary-color);
 }
 
-/* Game Cards */
+/* Game Cards - Updated to match project card layout */
 .games-grid {
     display: grid;
     grid-template-columns: 1fr;
@@ -29,7 +29,6 @@
 }
 
 .game-card {
-    display: flex;
     background-color: var(--card-bg);
     border-radius: 8px;
     overflow: hidden;
@@ -43,8 +42,7 @@
 }
 
 .game-logo {
-    flex: 0 0 150px;
-    height: 150px;
+    height: 200px;
     background: var(--dark-bg);
     overflow: hidden;
     position: relative;
@@ -77,10 +75,15 @@
 }
 
 .game-content {
-    flex: 1;
     padding: 20px;
-    display: flex;
-    flex-direction: column;
+}
+
+.game-content h3 {
+    margin-bottom: 10px;
+}
+
+.game-content p {
+    margin-bottom: 15px;
 }
 
 /* Video Container */
@@ -105,7 +108,7 @@
 /* Responsive Design */
 @media (min-width: 768px) {
     .games-grid {
-        grid-template-columns: repeat(auto-fill, minmax(600px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
     }
     
     .project-grid {
@@ -115,11 +118,10 @@
 
 @media (max-width: 767px) {
     .game-card {
-        flex-direction: column;
+        width: 100%;
     }
     
     .game-logo {
         height: 200px;
-        flex: 0 0 auto;
     }
 }

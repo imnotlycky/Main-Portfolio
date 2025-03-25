@@ -1,3 +1,61 @@
+function numRound(inp) {
+    function round(inp) {
+        return Math.round(inp);
+    }
+
+    function toNum(inp) {
+        return isNaN(Number(inp)) ? null : Number(inp);
+    }
+
+    if (inp !== null && inp !== undefined) {
+        let val = toNum(inp);
+        if (val !== null) {
+            return round(val);
+        }
+    }
+    return null;
+}
+
+function roundDown(value, decimalPlaces) {
+    let multiplier = Math.pow(10, decimalPlaces);
+    return Math.floor(value * multiplier) / multiplier;
+}
+
+function formatStr(number) {
+    number = number || 0;
+    let num = numRound(number);
+
+    if (number < 1000) {
+        num = roundDown(number, 1);
+    }
+
+    let str = num.toString();
+    return str.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+const suffixes = ["", "K", "M", "B", "T", "Qa", "Qi", "Sx", "Sp", "Oc", "No", "Dc"];
+
+function formatNum(input, limit = 1e21) {
+    let num = Number(input);
+    if (isNaN(num)) return null;
+    
+    num = Math.abs(num);
+    const StrLimit = 1e21;
+    const NumLimit = 1e308;
+
+    if (num >= limit || num >= StrLimit) {
+        for (let i = 1; i < suffixes.length; i++) {
+            if (num < Math.pow(10, i * 3)) {
+                return (Math.floor(num / (Math.pow(10, (i - 1) * 3) / 100)) / 100) + suffixes[i];
+            } else if (num >= NumLimit) {
+                return "Inf";
+            }
+        }
+    }
+
+    return formatStr(num);
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     // Mobile menu toggle
     const mobileMenu = document.getElementById('mobile-menu');
@@ -41,28 +99,60 @@ document.addEventListener('DOMContentLoaded', function() {
     const gameData = [
         {
             title: "Tiny 2d Bread Factory 2",
-            description: "First Fully 2d Game made on Roblox with 20k visits!",
+            description: "First Fully 2d Game made on Roblox",
             placeId: "14582193124",
             link: "https://www.roblox.com/games/14582193124",
             category: "games"
         },
         {
             title: "Level Incremental",
-            description: "My First solo Code project (every place before this has been privated) 40k visits",
+            description: "My First solo Code project (every place before this has been privated)",
             placeId: "16908148221",
             link: "https://www.roblox.com/games/16908148221",
+            category: "games"
+        },
+        {
+            title: "Ore Tycoon [Factorio]",
+            description: "A remake of Factorio in roblox",
+            placeId: "18343978555",
+            link: "https://www.roblox.com/games/18343978555",
+            category: "games"
+        },
+        {
+            title: "Project Meltdown",
+            description: "Roblox game based off of COD: Zombies (First Fps System)",
+            placeId: "13663218830",
+            link: "https://www.roblox.com/games/13663218830",
             category: "games"
         }
     ];
 
     // Initialize game cards
-    function initializeGameCards() {
+    async function initializeGameCards() {
         const gamesGrid = document.querySelector('.games-grid');
-        
-        gameData.forEach(game => {
+
+        for (val in gameData) {
+            const game = gameData[val]
+
             const gameCard = document.createElement('div');
             gameCard.className = 'game-card';
             gameCard.setAttribute('data-category', game.category);
+
+            let visits = "Loading..."
+
+            try {
+                const response = await fetch(`../.netlify/functions/fetchRobloxGameInfo?placeId=${game.placeId}`)
+
+                const data = await response.json()
+
+                if (response.ok) {
+                    let visitCount = data.result;
+
+                    visits = formatNum(visitCount, 1e5);
+                }
+            } catch (error) {
+                console.error("Error loading game image:", error);
+            }
             
             gameCard.innerHTML = `
                 <div class="game-logo loading">
@@ -75,6 +165,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="game-content">
                     <h3>${game.title}</h3>
                     <p>${game.description}</p>
+                    <p>Visits: ${visits}</p>
                     <a href="${game.link}" target="_blank" class="btn btn-primary">
                         <i class="fas fa-play"></i> Play Now
                     </a>
@@ -82,7 +173,9 @@ document.addEventListener('DOMContentLoaded', function() {
             `;
             
             gamesGrid.appendChild(gameCard);
-        });
+        }
+
+        return "success"
     }
 
     // Fetch game images from Netlify function
@@ -94,9 +187,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const container = logo.parentElement;
             
             try {
-                const response = await fetch(
-                    `../.netlify/functions/fetchRobloxData?placeId=${placeId}`
-                );
+                const response = await fetch(`../.netlify/functions/fetchRobloxGameIcon?placeId=${placeId}`);
+
                 const data = await response.json();
 
                 if (response.ok) {
@@ -139,8 +231,11 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Initialize all components
-    initializeGameCards();
-    loadGameImages();
-    lazyLoadVideos();
+    async function initializeAll() {
+        await initializeGameCards();
+        await loadGameImages();
+        lazyLoadVideos();
+    }
+
+    initializeAll();
 });
