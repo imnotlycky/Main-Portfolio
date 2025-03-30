@@ -56,6 +56,71 @@ function formatNum(input, limit = 1e21) {
     return formatStr(num);
 }
 
+async function fetchRobloxGameIcon(placeId) {
+    let link = `https://thumbnails.roproxy.com/v1/assets?assetIds=${placeId}&returnPolicy=PlaceHolder&size=700x700&format=Png&isCircular=false`
+
+    try {
+        const response = await fetch(link, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+
+        const result = await response.json()
+
+        if (response.ok) {
+            return result.data[0].imageUrl
+        }
+        else {
+            return "../images/transparent.png"
+        }
+    }
+    catch (e) {
+        return "../images/transparent.png"
+    }
+}
+
+async function fetchRobloxGameInfo(placeId) {
+    let link = `https://apis.roproxy.com/universes/v1/places/${placeId}/universe`
+
+    try { 
+        const response = await fetch(link, {
+            method: 'GET',
+            headers: {
+                'Content-Type': "application/json",
+            }
+        })
+
+        const result = await response.json()
+
+        if (response.ok) {
+            let link2 = `https://games.roproxy.com/v1/games?universeIds=${result.universeId}`
+
+            const response2 = await fetch(link2, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': "application/json"
+                }
+            })
+
+            const result2 = await response2.json()
+
+            if (response2.ok) {
+                return result2.data[0].visits
+            }
+            else {
+                return "Loading..."
+            }
+        }
+        else {
+            return "Loading..."
+        }
+    } catch(e) {
+        return "Loading..."
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     // Mobile menu toggle
     const mobileMenu = document.getElementById('mobile-menu');
@@ -140,19 +205,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
             let visits = "Loading..."
 
-            try {
-                const response = await fetch(`../.netlify/functions/fetchRobloxGameInfo?placeId=${game.placeId}`)
+            let visitamount = await fetchRobloxGameInfo(game.placeId)
 
-                const data = await response.json()
-
-                if (response.ok) {
-                    let visitCount = data.result;
-
-                    visits = formatNum(visitCount, 1e5);
-                }
-            } catch (error) {
-                console.error("Error loading game image:", error);
-            }
+            visits = formatNum(visitamount, 1e5)
             
             gameCard.innerHTML = `
                 <div class="game-logo loading">
@@ -186,23 +241,11 @@ document.addEventListener('DOMContentLoaded', function() {
             const placeId = logo.id;
             const container = logo.parentElement;
             
-            try {
-                const response = await fetch(`../.netlify/functions/fetchRobloxGameIcon?placeId=${placeId}`);
-
-                const data = await response.json();
-
-                if (response.ok) {
-                    logo.style.opacity = '0';
-                    logo.src = data.result;
-                    logo.onload = () => {
-                        logo.style.opacity = '1';
-                        container.classList.remove('loading');
-                    };
-                }
-            } catch (error) {
-                console.error("Error loading game image:", error);
-                logo.src = '../images/transparent.png';
-                container.classList.remove('loading');
+            logo.style.opacity = '0'
+            logo.src = await fetchRobloxGameIcon(placeId)
+            logo.onload = () => {
+                logo.style.opacity = '1'
+                container.classList.remove('loading')
             }
         }
     }

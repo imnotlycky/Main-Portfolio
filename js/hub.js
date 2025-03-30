@@ -1,6 +1,3 @@
-
-let Amount = localStorage.getItem("Amount") || 0
-
 document.addEventListener('DOMContentLoaded', function() {
     // Mobile menu toggle
     const mobileMenu = document.getElementById('mobile-menu');
@@ -112,7 +109,7 @@ document.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('scroll', highlightNavLink);
     
     // Contact form handling
-    const contactForm = document.getElementById('contact-form');
+    /*const contactForm = document.getElementById('contact-form');
     
     if (contactForm) {
         contactForm.addEventListener('submit', async function(e) {
@@ -211,7 +208,7 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(() => {
             alertElement.remove();
         }, 5000);
-    }
+    }*/
     
     // Add event listeners for any theme switcher buttons
     document.querySelectorAll('.theme-option').forEach(option => {
