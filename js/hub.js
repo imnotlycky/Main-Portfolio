@@ -1,3 +1,7 @@
+let data = "ContactAppId_V1.0.0"
+
+let contactId = localStorage.getItem(data) || 1
+
 document.addEventListener('DOMContentLoaded', function() {
     // Mobile menu toggle
     const mobileMenu = document.getElementById('mobile-menu');
@@ -109,7 +113,7 @@ document.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('scroll', highlightNavLink);
     
     // Contact form handling
-    /*const contactForm = document.getElementById('contact-form');
+    const contactForm = document.getElementById('contact-form');
     
     if (contactForm) {
         contactForm.addEventListener('submit', async function(e) {
@@ -136,7 +140,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const formData = {
                 "title": "Contact Information",
                 "color": 3342591,
-                "value": `${Amount}`,
+                "value": `${contactId}`,
                 "message": `${message}`,
                 "subject": `${subject}`,
                 "email": `${email}`,
@@ -144,8 +148,7 @@ document.addEventListener('DOMContentLoaded', function() {
               }
             
               try {
-                // Send data to Netlify function
-                const response = await fetch('../.netlify/functions/discordWebhook', {
+                const response = await fetch('https://iced-abyssinian-quartz.glitch.me/send-form', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(formData)
@@ -197,7 +200,8 @@ document.addEventListener('DOMContentLoaded', function() {
             alertElement.style.color = '#2ecc71';
             alertElement.style.border = '1px solid #2ecc71';
 
-            localStorage.setItem("Amount", localStorage.getItem("Amount")+1)
+            contactId++
+            localStorage.setItem(data, contactId)
         } else {
             alertElement.style.backgroundColor = 'rgba(231, 76, 60, 0.2)';
             alertElement.style.color = '#e74c3c';
@@ -208,7 +212,7 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(() => {
             alertElement.remove();
         }, 5000);
-    }*/
+    }
     
     // Add event listeners for any theme switcher buttons
     document.querySelectorAll('.theme-option').forEach(option => {
