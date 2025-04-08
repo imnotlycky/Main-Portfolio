@@ -148,7 +148,7 @@ document.addEventListener('DOMContentLoaded', function() {
               }
             
               try {
-                const response = await fetch('https://iced-abyssinian-quartz.glitch.me/send-form', {
+                const response = await fetch('https://lycky-contact.glitch.me/send-form', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(formData)
