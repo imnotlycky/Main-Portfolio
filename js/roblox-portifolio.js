@@ -57,67 +57,49 @@ function formatNum(input, limit = 1e21) {
 }
 
 async function fetchRobloxGameIcon(placeId) {
-    let link = `https://thumbnails.roproxy.com/v1/assets?assetIds=${placeId}&returnPolicy=PlaceHolder&size=700x700&format=Png&isCircular=false`
+    const proxy = "https://api.allorigins.win/raw?url=";
+    const apiUrl = encodeURIComponent(
+        `https://thumbnails.roproxy.com/v1/assets?assetIds=${placeId}&returnPolicy=PlaceHolder&size=700x700&format=Png&isCircular=false`
+    );
 
     try {
-        const response = await fetch(link, {
+        const response = await fetch(`${proxy}${apiUrl}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
             }
-        })
+        });
 
-        const result = await response.json()
+        const result = await response.json();
 
-        if (response.ok) {
-            return result.data[0].imageUrl
+        if (response.ok && result.data && result.data.length > 0) {
+            return result.data[0].imageUrl;
+        } else {
+            return "../images/transparent.png";
         }
-        else {
-            return "../images/transparent.png"
-        }
-    }
-    catch (e) {
-        return "../images/transparent.png"
+    } catch (e) {
+        console.error("Error fetching icon:", e);
+        return "../images/transparent.png";
     }
 }
 
+
 async function fetchRobloxGameInfo(placeId) {
-    let link = `https://apis.roproxy.com/universes/v1/places/${placeId}/universe`
+    const proxy = "https://api.allorigins.win/raw?url=";
+    const universeUrl = encodeURIComponent(`https://apis.roproxy.com/universes/v1/places/${placeId}/universe`);
+    
+    try {
+        const response = await fetch(`${proxy}${universeUrl}`);
+        const result = await response.json();
 
-    try { 
-        const response = await fetch(link, {
-            method: 'GET',
-            headers: {
-                'Content-Type': "application/json",
-            }
-        })
+        const gameUrl = encodeURIComponent(`https://games.roproxy.com/v1/games?universeIds=${result.universeId}`);
+        const response2 = await fetch(`${proxy}${gameUrl}`);
+        const result2 = await response2.json();
 
-        const result = await response.json()
-
-        if (response.ok) {
-            let link2 = `https://games.roproxy.com/v1/games?universeIds=${result.universeId}`
-
-            const response2 = await fetch(link2, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': "application/json"
-                }
-            })
-
-            const result2 = await response2.json()
-
-            if (response2.ok) {
-                return result2.data[0].visits
-            }
-            else {
-                return "Loading..."
-            }
-        }
-        else {
-            return "Loading..."
-        }
-    } catch(e) {
-        return "Loading..."
+        return result2.data?.[0]?.visits ?? "Loading...";
+    } catch (e) {
+        console.error(e);
+        return "Loading...";
     }
 }
 
