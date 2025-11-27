@@ -147,8 +147,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 "name": `${name}` 
               }
             
-              try {
-                const response = await fetch('https://lycky-contact.glitch.me/send-form', {
+            let link = "https://lycky-api.vercel.app/send-contact"
+
+            try {
+                const response = await fetch(`${link}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(formData)
