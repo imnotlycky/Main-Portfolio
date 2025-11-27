@@ -151,12 +151,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
             try {
                 const response = await fetch(`${link}`, {
-                    method: 'POST',
+                    method: 'GET',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(formData)
                 });
     
                 const result = await response.json();
+
+                console.log(result)
     
                 if (response.ok) {
                     showFormAlert('Message sent successfully! I will get back to you soon.', 'success');
