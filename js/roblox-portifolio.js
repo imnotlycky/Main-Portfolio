@@ -57,8 +57,8 @@ function formatNum(input, limit = 1e21) {
 }
 
 let proxy = "roproxy"
-let link = "https://lycky-api-git-main-lyckys-projects.vercel.app"
-let api = `${link}/api/roblox?address=`
+let link = "https://lycky-api.vercel.app/"
+let api = `${link}api/roblox?address=`
 
 async function fetchRobloxGameIcon(placeId) {
     const apiUrl = encodeURIComponent(`thumbnails.${proxy}.com/v1/assets?assetIds=${placeId}&returnPolicy=PlaceHolder&size=700x700&format=Png&isCircular=false`)
@@ -73,7 +73,6 @@ async function fetchRobloxGameIcon(placeId) {
         });
 
         const result = await response.json();
-
         if (response.ok && result.data && result.data.length > 0) {
             return result.data[0].imageUrl;
         } else {
@@ -93,7 +92,8 @@ async function fetchRobloxGameInfo(placeId) {
         const response = await fetch(`${newApiUrl}`, {
             method: 'GET',
             headers: {
-                'Access-Control-Allow-Origin': '*'
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': "application/json"
             }
         });
         const result = await response.json();
@@ -103,7 +103,8 @@ async function fetchRobloxGameInfo(placeId) {
         const response2 = await fetch(`${newgameUrl}`, {
             method: 'GET',
             headers: {
-                'Access-Control-Allow-Origin': '*'
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': "application/json"
             }
         });
         const result2 = await response2.json();
@@ -222,6 +223,10 @@ document.addEventListener('DOMContentLoaded', function() {
             `;
             
             gamesGrid.appendChild(gameCard);
+
+            setTimeout(() => {
+                console.log();
+            }, 100)
         }
 
         return "success"
