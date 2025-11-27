@@ -57,10 +57,11 @@ function formatNum(input, limit = 1e21) {
 }
 
 let proxy = "roproxy"
+let api = "https://lycky-2n0fwe7sr-lyckys-projects.vercel.app/api/roblox?address="
 
 async function fetchRobloxGameIcon(placeId) {
     const apiUrl = encodeURIComponent(`https://thumbnails.${proxy}.com/v1/assets?assetIds=${placeId}&returnPolicy=PlaceHolder&size=700x700&format=Png&isCircular=false`)
-    const newApiUrl = `https://lycky-9jf46cscl-lyckys-projects.vercel.app/api/roblox?address=${apiUrl}`
+    const newApiUrl = `${api}${apiUrl}`
     try {
         const response = await fetch(`${newApiUrl}`, {
             method: 'GET',
@@ -86,7 +87,7 @@ async function fetchRobloxGameIcon(placeId) {
 
 async function fetchRobloxGameInfo(placeId) {
     const universeUrl = encodeURIComponent(`https://apis.${proxy}.com/universes/v1/places/${placeId}/universe`);
-    const newApiUrl = `https://lycky-9jf46cscl-lyckys-projects.vercel.app/api/roblox?address=${universeUrl}`;
+    const newApiUrl = `${api}${universeUrl}`
     try {
         const response = await fetch(`${newApiUrl}`, {
             method: 'GET',
@@ -97,7 +98,7 @@ async function fetchRobloxGameInfo(placeId) {
         const result = await response.json();
 
         const gameUrl = encodeURIComponent(`https://games.${proxy}.com/v1/games?universeIds=${result.universeId}`)
-        const newgameUrl = `https://lycky-9jf46cscl-lyckys-projects.vercel.app/api/roblox?address=${gameUrl}`;
+        const newgameUrl = `${api}${gameUrl}`
         const response2 = await fetch(`${newgameUrl}`, {
             method: 'GET',
             headers: {
