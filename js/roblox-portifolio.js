@@ -57,7 +57,7 @@ function formatNum(input, limit = 1e21) {
 }
 
 let proxy = "roproxy"
-let api = "https://lycky-2n0fwe7sr-lyckys-projects.vercel.app/api/roblox?address="
+let api = "https://lycky-api.vercel.app/api/roblox?address="
 
 async function fetchRobloxGameIcon(placeId) {
     const apiUrl = encodeURIComponent(`thumbnails.${proxy}.com/v1/assets?assetIds=${placeId}&returnPolicy=PlaceHolder&size=700x700&format=Png&isCircular=false`)
