@@ -56,17 +56,17 @@ function formatNum(input, limit = 1e21) {
     return formatStr(num);
 }
 
-async function fetchRobloxGameIcon(placeId) {
-    const proxy = "https://api.allorigins.win/raw?url=";
-    const apiUrl = encodeURIComponent(
-        `https://thumbnails.roproxy.com/v1/assets?assetIds=${placeId}&returnPolicy=PlaceHolder&size=700x700&format=Png&isCircular=false`
-    );
+let proxy = "roproxy"
 
+async function fetchRobloxGameIcon(placeId) {
+    const apiUrl = encodeURIComponent(`https://thumbnails.${proxy}.com/v1/assets?assetIds=${placeId}&returnPolicy=PlaceHolder&size=700x700&format=Png&isCircular=false`)
+    const newApiUrl = `https://lycky-9jf46cscl-lyckys-projects.vercel.app/api/roblox?address=${apiUrl}`
     try {
-        const response = await fetch(`${proxy}${apiUrl}`, {
+        const response = await fetch(`${newApiUrl}`, {
             method: 'GET',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
             }
         });
 
@@ -85,15 +85,25 @@ async function fetchRobloxGameIcon(placeId) {
 
 
 async function fetchRobloxGameInfo(placeId) {
-    const proxy = "https://api.allorigins.win/raw?url=";
-    const universeUrl = encodeURIComponent(`https://apis.roproxy.com/universes/v1/places/${placeId}/universe`);
-    
+    const universeUrl = encodeURIComponent(`https://apis.${proxy}.com/universes/v1/places/${placeId}/universe`);
+    const newApiUrl = `https://lycky-9jf46cscl-lyckys-projects.vercel.app/api/roblox?address=${universeUrl}`;
     try {
-        const response = await fetch(`${proxy}${universeUrl}`);
+        const response = await fetch(`${newApiUrl}`, {
+            method: 'GET',
+            headers: {
+                'Access-Control-Allow-Origin': '*'
+            }
+        });
         const result = await response.json();
 
-        const gameUrl = encodeURIComponent(`https://games.roproxy.com/v1/games?universeIds=${result.universeId}`);
-        const response2 = await fetch(`${proxy}${gameUrl}`);
+        const gameUrl = encodeURIComponent(`https://games.${proxy}.com/v1/games?universeIds=${result.universeId}`)
+        const newgameUrl = `https://lycky-9jf46cscl-lyckys-projects.vercel.app/api/roblox?address=${gameUrl}`;
+        const response2 = await fetch(`${newgameUrl}`, {
+            method: 'GET',
+            headers: {
+                'Access-Control-Allow-Origin': '*'
+            }
+        });
         const result2 = await response2.json();
 
         return result2.data?.[0]?.visits ?? "Loading...";
